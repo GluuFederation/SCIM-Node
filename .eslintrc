@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "no-param-reassign": "off",
+    "no-console": "error"
+  },
+  "extends": "eslint-config-airbnb-es5"
+}

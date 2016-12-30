@@ -1,0 +1,12 @@
+#tests
+test
+coverage
+
+#linters
+.jscsrc
+.jshintrc
+.eslintrc*
+
+#editor settings
+.idea
+.editorconfig

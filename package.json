@@ -1,0 +1,28 @@
+{
+  "name": "scim-node",
+  "version": "1.0.0",
+  "description": "node lib for SCIM 2.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/GluuFederation/scim-node"
+  },
+  "author": "meghna joshi",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "jsonwebtoken": "^7.2.1",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^6.1.2",
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb-es5": "^1.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-react": "^6.8.0"
+  }
+}
