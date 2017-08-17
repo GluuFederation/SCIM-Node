@@ -2,6 +2,7 @@
 
 SCIM node is a client library for the Gluu SCIM 2.0. For information about SCIM 2.0, visit <https://gluu.org/docs/api/scim-2.0/>
 There are two scim for dealing with UMA 1.0 and UMA 2.0.
+
 For UMA 1.0 use
 ```
 var scim = require('scim-node')(config);
