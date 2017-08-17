@@ -21,7 +21,7 @@ var scim = require('./index')(config);
 // region "getUsersCount": To get total count of users.
 
 // Process data or handle error in callback function.
-scim.getUsersCount(callback);
+scim.scim2.getUsersCount(callback);
 function callback(error, data) {
   if (error) {
     // Handle error here.
@@ -30,7 +30,7 @@ function callback(error, data) {
   }
 }
 // Process data or handle error using promise.
-scim.getUsersCount().then(function (data) {
+scim.scim2.getUsersCount().then(function (data) {
   // Process data here.
 }).catch(function (error) {
   // Handle error here.
@@ -40,12 +40,12 @@ scim.getUsersCount().then(function (data) {
 // region "getUsers": To get collection of users.
 // "startIndex" is page index.
 // "count" is number of users to be returned.
-scim.getUsers(startIndex, count, callback);
+scim.scim2.getUsers(startIndex, count, callback);
 // endregion
 
 // region "getUser": To get user object using id attribute of type inum.
 // "id" is inum of user.
-scim.getUser(id, callback);
+scim.scim2.getUser(id, callback);
 // endregion
 
 // region "addUser": To insert new user to SCIM.
@@ -121,10 +121,10 @@ var userSampleData =
     }
   };
 
-scim.addUser(userSampleData, callback);
+scim.scim2.addUser(userSampleData, callback);
 // endregion
 
 // region "removeUser": To delete user from SCIM using id attribute of type inum.
 // "id" is inum of user.
-scim.removeUser(id, callback);
+scim.scim2.removeUser(id, callback);
 // endregion

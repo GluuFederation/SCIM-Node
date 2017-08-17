@@ -1,7 +1,18 @@
 # SCIM-node
 
 SCIM node is a client library for the Gluu SCIM 2.0. For information about SCIM 2.0, visit <https://gluu.org/docs/api/scim-2.0/>
+There are two scim for dealing with UMA 1.0 and UMA 2.0.
+For UMA 1.0 use
+```
+var scim = require('scim-node')(config);
+scim.scim.getUsersCount(callback);
+```
 
+For UMA 2.0 use
+```
+var scim = require('scim-node')(config);
+scim.scim2.getUsersCount(callback);
+```
 ## Installation
 
 * [Github sources](https://github.com/GluuFederation/scim-node)
@@ -47,7 +58,7 @@ To get total count of users.
 
 ```javascript
 // Process data or handle error in callback function.
-scim.getUsersCount(callback);
+scim.scim2.getUsersCount(callback);
 function callback(error, data) {
   if (error) {
     // Handle error here.
@@ -59,7 +70,7 @@ function callback(error, data) {
 or
 ```javascript
 // Process data or handle error using promise.
-scim.getUsersCount().then(function (data) {
+scim.scim2.getUsersCount().then(function (data) {
   // Process data here.
 }).catch(function (error) {
   // Handle error here.
@@ -81,7 +92,7 @@ To get collection of users.
 **Request:**
 
 ```javascript
-scim.getUsers(startIndex, count, callback);
+scim.scim2.getUsers(startIndex, count, callback);
 ```
 
 **Response:**
@@ -98,7 +109,7 @@ To get user object using id attribute of type inum.
 **Request:**
 
 ```javascript
-scim.getUser(id, callback);
+scim.scim2.getUser(id, callback);
 ```
 
 **Response:**
@@ -116,7 +127,7 @@ Full structure of 'userSampleData' is specified in example.js file.
 **Request:**
 
 ```javascript
-scim.addUser(userSampleData, callback);
+scim.scim2.addUser(userSampleData, callback);
 ```
 
 **Response:**
@@ -133,7 +144,7 @@ To delete user from SCIM using id attribute of type inum.
 **Request:**
 
 ```javascript
-scim.removeUser(id, callback);
+scim.scim2.removeUser(id, callback);
 ```
 
 **Response:**
