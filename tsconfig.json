@@ -4,9 +4,9 @@
     "module": "commonjs",
     "target": "es2017",
     "sourceMap": true,
-    "allowJs": true,
     "esModuleInterop": true,
-    "outDir": "build"
+    "outDir": "build",
+    "declaration": true
   },
   "exclude": [
     "node_modules",

@@ -3,6 +3,7 @@
   "version": "2.1.0",
   "description": "node lib for SCIM 2.0",
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "author": {
     "name": "meghna joshi"
   },
@@ -13,10 +14,9 @@
     "start": "node -r source-map-support/register build/index.js",
     "debug": "tsc && node -r source-map-support/register %NODE_DEBUG_OPTION% build/test.js",
     "test": "jest",
-    "dts-generator": "rm scim-node-2.d.ts && dts-generator --name scim-node-2 --project . --out scim-node-2.d.ts",
     "build": "rm -rf build && tsc",
     "test-CI": "jest --ci --coverage",
-    "git-add-builded": "git add build scim-node-2.d.ts",
+    "git-add-builded": "git add build",
     "watch": "jest --env=jsdom --watch"
   },
   "repository": {
@@ -25,7 +25,6 @@
   },
   "pre-commit": [
     "build",
-    "dts-generator",
     "git-add-builded"
   ],
   "license": "MIT",
