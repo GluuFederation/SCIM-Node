@@ -1,4 +1,16 @@
-import ScimCommon, {AATDetails, GluuResponse,groupDetail, rptDetails,ScimConfig,scimConfigurations, scimResponse,ticket,umaConfigurations, userDetail} from "./SCIMCommon";
+import ScimCommon, {
+  AATDetails,
+  GluuResponse,
+  groupDetail,
+  IAddUser,
+  rptDetails,
+  ScimConfig,
+  scimConfigurations,
+  scimResponse,
+  ticket,
+  umaConfigurations,
+  userDetail
+} from "./SCIMCommon";
 import axios, {AxiosResponse} from "axios";
 import {parsers} from "www-authenticate";
 import fs from "fs";
@@ -81,78 +93,6 @@ export default class SCIM2 extends ScimCommon {
 
 
   /**
-   * Gets AAT token detail.
-   * @param {ScimConfig} config - json of config values of Gluu client
-   * @param {string} tokenEndpoint - Token endpoint URL retrieve from UMA configuration.
-   * @param ticket
-   * @returns {Promise<AATDetails, error>} - A promise that returns a AATDetails if resolved, or an Error if rejected.
-   */
-  private async getToken(config: ScimConfig, tokenEndpoint: string, ticket: ticket): Promise<AATDetails> {
-    let scimCert = fs.readFileSync(config.privateKey, 'utf8'); // get private key and replace headers to sign jwt
-    scimCert = scimCert.replace('-----BEGIN RSA PRIVATE KEY-----', '-----BEGIN PRIVATE KEY-----');
-    scimCert = scimCert.replace('-----END RSA PRIVATE KEY-----', '-----END PRIVATE KEY-----');
-
-    let optionsToken = {
-      algorithm: config.keyAlg,
-      header: {
-        'typ': 'JWT',
-        'alg': config.keyAlg,
-        'kid': config.keyId
-      }
-    };
-
-    let options = {
-      method: 'POST',
-      url: tokenEndpoint,
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: null,
-      auth: null
-    };
-
-    if (this.params.scimTestMode) {
-      options.auth = {
-        username: this.params.clientId,
-        password: this.params.userPassword
-      };
-      options.data = queryString.stringify({
-        grant_type: "client_credentials"
-      })
-    }
-    else {
-      let token = jwt.sign({
-        iss: config.clientId,
-        sub: config.clientId,
-        aud: tokenEndpoint,
-        jti: uuid(),
-        exp: (new Date().getTime() / 1000 + 30),
-        iat: (new Date().getTime())
-      }, scimCert, optionsToken);
-
-      options.data = queryString.stringify({
-        grant_type: 'urn:ietf:params:oauth:grant-type:uma-ticket',
-        scope: 'uma_authorization',
-        client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
-        client_assertion: token,
-        client_id: config.clientId,
-        ticket: ticket.ticket
-      })
-    }
-
-    let result;
-    try {
-      result = <AxiosResponse>await axios.request(options);
-    }
-    catch (e) {
-      debugger;
-    }
-
-    return <AATDetails>result.data;
-  }
-
-
-  /**
    *
    * Gets RPT and SCIM details of Gluu client
    * @param {ScimConfig} config - json of config values of Gluu client
@@ -189,6 +129,7 @@ export default class SCIM2 extends ScimCommon {
 
     return rptDetail;
   }
+
 
   /**
    * @todo never used ?
@@ -227,6 +168,79 @@ export default class SCIM2 extends ScimCommon {
     let result = <AxiosResponse>await axios.request(options);
 
     return result.data;
+  }
+
+  /**
+   * Gets AAT token detail.
+   * @param {ScimConfig} config - json of config values of Gluu client
+   * @param {string} tokenEndpoint - Token endpoint URL retrieve from UMA configuration.
+   * @param ticket
+   * @returns {Promise<AATDetails, error>} - A promise that returns a AATDetails if resolved, or an Error if rejected.
+   */
+  private async getToken(config: ScimConfig, tokenEndpoint: string, ticket: ticket): Promise<AATDetails> {
+
+    let options = {
+      method: 'POST',
+      url: tokenEndpoint,
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: null,
+      auth: null
+    };
+
+    if (this.params.scimTestMode) {
+      options.auth = {
+        username: this.params.clientId,
+        password: this.params.userPassword
+      };
+      options.data = queryString.stringify({
+        grant_type: "client_credentials"
+      })
+    }
+    else {
+
+      let scimCert = fs.readFileSync(config.privateKey, 'utf8'); // get private key and replace headers to sign jwt
+      scimCert = scimCert.replace('-----BEGIN RSA PRIVATE KEY-----', '-----BEGIN PRIVATE KEY-----');
+      scimCert = scimCert.replace('-----END RSA PRIVATE KEY-----', '-----END PRIVATE KEY-----');
+
+      let optionsToken = {
+        algorithm: config.keyAlg,
+        header: {
+          'typ': 'JWT',
+          'alg': config.keyAlg,
+          'kid': config.keyId
+        }
+      };
+
+      let token = jwt.sign({
+        iss: config.clientId,
+        sub: config.clientId,
+        aud: tokenEndpoint,
+        jti: uuid(),
+        exp: (new Date().getTime() / 1000 + 30),
+        iat: (new Date().getTime())
+      }, scimCert, optionsToken);
+
+      options.data = queryString.stringify({
+        grant_type: 'urn:ietf:params:oauth:grant-type:uma-ticket',
+        scope: 'uma_authorization',
+        client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+        client_assertion: token,
+        client_id: config.clientId,
+        ticket: ticket.ticket
+      })
+    }
+
+    let result;
+    try {
+      result = <AxiosResponse>await axios.request(options);
+    }
+    catch (e) {
+      debugger;
+    }
+
+    return <AATDetails>result.data;
   }
 
 
@@ -309,7 +323,7 @@ export default class SCIM2 extends ScimCommon {
         'Accept': 'application/scim+json;charset=utf-8',
         authorization: 'Bearer '.concat(rpt)
       },
-      body: JSON.stringify(data)
+      data
     };
 
     let result = <AxiosResponse>await axios.request(options);
@@ -391,7 +405,7 @@ export default class SCIM2 extends ScimCommon {
    * @param {object} userData - Object of user details
    * @returns {Promise<object, error>} - callback or promise that returns user detail if resolved, or an Error if rejected.
    */
-  async addUser(userData: userDetail): Promise<userDetail> {
+  async addUser(userData: IAddUser): Promise<userDetail> {
     let scimConfig = await this.getSCIMConfigurations(this.params.domain);
     let rptDetail = await this.getRPTToken(this.params, scimConfig.user_endpoint);
     return await this.insert(scimConfig.user_endpoint, rptDetail.RPT.access_token, userData, 'urn:ietf:params:scim:schemas:core:2.0:User');

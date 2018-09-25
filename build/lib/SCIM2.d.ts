@@ -1,4 +1,4 @@
-import ScimCommon, { GluuResponse, groupDetail, ScimConfig, userDetail } from "./SCIMCommon";
+import ScimCommon, { GluuResponse, groupDetail, IAddUser, ScimConfig, userDetail } from "./SCIMCommon";
 export default class SCIM2 extends ScimCommon {
     constructor(params: ScimConfig);
     /**
@@ -15,14 +15,6 @@ export default class SCIM2 extends ScimCommon {
      */
     private getSCIMConfigurations;
     private getTicketAndConfig;
-    /**
-     * Gets AAT token detail.
-     * @param {ScimConfig} config - json of config values of Gluu client
-     * @param {string} tokenEndpoint - Token endpoint URL retrieve from UMA configuration.
-     * @param ticket
-     * @returns {Promise<AATDetails, error>} - A promise that returns a AATDetails if resolved, or an Error if rejected.
-     */
-    private getToken;
     /**
      *
      * Gets RPT and SCIM details of Gluu client
@@ -41,6 +33,14 @@ export default class SCIM2 extends ScimCommon {
      * @returns {Promise<rptDetails, error>} - A promise that returns a rptDetails if resolved, or an Error if rejected.
      */
     private authorizeRPT;
+    /**
+     * Gets AAT token detail.
+     * @param {ScimConfig} config - json of config values of Gluu client
+     * @param {string} tokenEndpoint - Token endpoint URL retrieve from UMA configuration.
+     * @param ticket
+     * @returns {Promise<AATDetails, error>} - A promise that returns a AATDetails if resolved, or an Error if rejected.
+     */
+    private getToken;
     /**
      * Retrieves user list or total counts if count is zero or undefined.
      * @param {string} endpoint - User Endpoint URL of SCIM 2.0
@@ -99,7 +99,7 @@ export default class SCIM2 extends ScimCommon {
      * @param {object} userData - Object of user details
      * @returns {Promise<object, error>} - callback or promise that returns user detail if resolved, or an Error if rejected.
      */
-    addUser(userData: userDetail): Promise<userDetail>;
+    addUser(userData: IAddUser): Promise<userDetail>;
     /**
      * To remove user.
      * @param {string} id - inum of user

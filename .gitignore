@@ -241,4 +241,8 @@ $RECYCLE.BIN/
 /src/**/*.js*
 
 src/test.ts
+build/test.d.ts
+build/test.js*
 yarn.lock
+
+
