@@ -195,6 +195,18 @@ declare class Scim2 extends ScimCommon {
     private _delete(endpoint, rpt, id): Promise<userDetail>
 
     /**
+     * Search users.
+     * @param {string} endpoint - User or Group Endpoint URL of SCIM 2.0
+     * @param {string} rpt - RPT token received from getRPT
+     * @param {string} filter - Search filters
+     * @param {int} startIndex - page index starts with 1.
+     * @param {int} count - number of users to be returned.
+     * @returns {requestCallback|Promise<object, error>} - callback or promise that returns users if resolved, or an Error if rejected.
+     */
+    private search(endpoint: string, rpt: string, filter: string, startIndex: number, count: number, schema: string): Promise<Array<userDetail>>
+
+
+  /**
      * To add new user.
      * @param {object} userData - Object of user details
      * @returns {Promise<object, error>} - callback or promise that returns user detail if resolved, or an Error if rejected.
@@ -359,6 +371,16 @@ declare class Scim1 extends ScimCommon {
      * @returns {Promise<userDetail, error>} - A promise that returns a userDetail if resolved, or an Error if rejected.
      */
     private insertUser(endpoint, rpt, data, schema): Promise<userDetail>
+
+    /**
+     * To send search user query.
+     * @param {string} filter - Filter string
+     * @param {int} startIndex - page index starts with 1.
+     * @param {int} count - number of users to be returned.
+     * @param {requestCallback} [callback] - The callback that handles the response and Error.
+     * @returns {requestCallback|Promise<object, error>} - callback or promise that returns user detail if resolved, or an Error if rejected.
+     */
+    private searchUsers(filter: string, startIndex: number, count: number, callback: ICallback): Promise<Array<userDetail>>
 }
 
 interface ScimConfig {

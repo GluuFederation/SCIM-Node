@@ -1,6 +1,6 @@
 {
   "name": "scim-node",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "node lib for SCIM 2.0",
   "main": "index.js",
   "scripts": {
