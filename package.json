@@ -13,11 +13,10 @@
   "author": "meghna joshi",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.21.1",
     "bluebird": "^3.4.7",
     "jsonwebtoken": "^7.2.1",
     "uuid": "^8.3.2",
-    "request": "^2.79.0",
-    "request-promise": "^4.1.1",
     "www-authenticate": "^0.6.2"
   },
   "devDependencies": {
